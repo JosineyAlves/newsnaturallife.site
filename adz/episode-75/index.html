@@ -7,6 +7,9 @@
     <title>Special Episode with Dean Ornish</title>
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="preconnect" href="https://scripts.converteai.net">
+    <link rel="preconnect" href="https://cdn.converteai.net">
+    <link rel="preconnect" href="https://images.converteai.net">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;family=Roboto:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
     <link rel="preload" href="https://scripts.converteai.net/528ac277-8029-4ec6-a3db-8da993dd5d9a/players/68cabc022372e2ed854cc4e0/v4/player.js" as="script">
@@ -161,14 +164,14 @@
         }
                     
         .banner-image {
-                        display: block;
+            display: block;
             width: 100%;
             height: auto;
             margin: 0;
             padding: 0;
-                        border-radius: 0;
-                        border: none;
-                    }
+            border-radius: 0;
+            border: none;
+        }
                     
         .footer-content {
                             text-align: center;
@@ -352,13 +355,14 @@
                     <span style="vertical-align:middle;"><span class="live-indicator">🔴</span> <span id="viewer-count">1.156</span> watching now</span>
                 </h3>
         </div>
-    </div>
+        
         <!-- Banner Section -->
         <div class="banner-section">
-            <img loading="lazy" src="img/banner.webp" alt="" class="banner-image">
-            </div>
+            <img loading="eager" src="img/banner.webp" alt="" class="banner-image" fetchpriority="high">
         </div>
-        <!-- Footer Section -->
+    </div>
+    
+    <!-- Footer Section -->
         <div class="footer-section">
             <footer class="footer-content">
                 <!-- Social Media Icons -->
@@ -427,9 +431,10 @@
         var elemento = document.querySelector('.alert-container');
         elemento.style.display = 'flex';
 
-        // CONTADOR DE VIEWERS SIMULADO
+        // CONTADOR DE VIEWERS SIMULADO - OTIMIZADO
         let viewerCount = 1156;
         const viewerElement = document.getElementById('viewer-count');
+        let updateTimeout;
         
         function updateViewerCount() {
             // 70% chance de aumentar, 30% chance de diminuir
@@ -449,17 +454,21 @@
             viewerElement.textContent = viewerCount.toLocaleString('pt-BR');
         }
         
-        // Atualizar contador a cada 3-8 segundos (aleatório)
+        // Atualizar contador a cada 3-8 segundos (aleatório) - OTIMIZADO
         function scheduleNextUpdate() {
             const delay = Math.random() * 5000 + 3000; // Entre 3-8 segundos
-            setTimeout(() => {
+            updateTimeout = setTimeout(() => {
                 updateViewerCount();
                 scheduleNextUpdate();
             }, delay);
         }
         
-        // Iniciar o contador
-        scheduleNextUpdate();
+        // Iniciar o contador após o carregamento da página
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', scheduleNextUpdate);
+        } else {
+            scheduleNextUpdate();
+        }
 
     </script>
 
